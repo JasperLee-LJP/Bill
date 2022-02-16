@@ -4,4 +4,11 @@
     <select id="selectByUsername" parameterType="string" resultType="pers.jasper.bill.po.User">
         select * from user where username = #{username}
     </select>
+    <insert id="addUser" parameterType="pers.jasper.bill.po.User" keyProperty="id" useGeneratedKeys="true">
+        insert into user (username, password, gender,
+            birthdate, mobile, email, createTime, status
+        ) values (#{username}, #{password}, #{gender},
+            #{birthdate}, #{mobile}, #{email}, #{createTime}, #{status}
+        )
+    </insert>
 </mapper>

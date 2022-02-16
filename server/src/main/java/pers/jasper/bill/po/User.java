@@ -16,7 +16,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "{id:" + id + ", userName: " + username + ", password: " + password
+        return "{id:" + id + ", username: " + username + ", password: " + password
                 + ", gender: " + gender + ", birthdate: " + birthdate
                 + ", mobile: " + mobile + ", email: " + email + "}";
     }

@@ -28,6 +28,7 @@ public class UserController {
     @ApiOperation("注册新用户")
     private User register(@RequestBody UserLoginDto userDto) {
         User user = userService.register(userDto);
+        user.setPassword(null);
         return user;
     }
 

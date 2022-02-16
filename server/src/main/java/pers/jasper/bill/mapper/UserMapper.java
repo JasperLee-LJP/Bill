@@ -8,7 +8,7 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
     List<User> selectByUsername(String username);
-    User addUser(User user);
+    int addUser(User user);
     User getUserInfoById(Integer id);
     User getUserInfoByUserNameAndPassword(User user);
 }
