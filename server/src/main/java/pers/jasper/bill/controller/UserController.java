@@ -3,13 +3,13 @@ package pers.jasper.bill.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pers.jasper.bill.dto.UserLoginDto;
 import pers.jasper.bill.po.User;
 import pers.jasper.bill.service.UserService;
-
-import java.util.Date;
 
 @RestController
 @RequestMapping("api/user")
@@ -26,10 +26,9 @@ public class UserController {
 
     @PostMapping(value = "register")
     @ApiOperation("注册新用户")
-    private User register(@RequestBody UserLoginDto userDto) {
+    private ResponseEntity<User> register(@RequestBody UserLoginDto userDto) {
         User user = userService.register(userDto);
-        user.setPassword(null);
-        return user;
+        return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
     @PostMapping(value = "login")

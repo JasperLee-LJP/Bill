@@ -2,9 +2,12 @@ package pers.jasper.bill.service.impl;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pers.jasper.bill.dto.UserLoginDto;
+import pers.jasper.bill.exception.CustomException;
+import pers.jasper.bill.exception.ErrorCode;
 import pers.jasper.bill.po.User;
 import pers.jasper.bill.mapper.UserMapper;
 import pers.jasper.bill.service.UserService;
@@ -26,14 +29,15 @@ public class UserServiceImpl implements UserService {
         user.setCreateTime(new Date());
         user.setStatus(1);
 
-        List<User> users = userMapper.selectByUsername(user.getUsername());
+        List<User> users = userMapper.getUserByUsername(user.getUsername());
         if(users.size() > 0) {
-            return null;
+            throw new CustomException(HttpStatus.CONFLICT, ErrorCode.USER_EXIST);
         }
 
         String encodePassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodePassword);
         userMapper.addUser(user);
+        user.setPassword(null);
         return user;
     }
 }
