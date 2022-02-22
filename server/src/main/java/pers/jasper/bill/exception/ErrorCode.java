@@ -7,7 +7,9 @@ public enum ErrorCode {
     INVALID_RESOURCE(10003, "未找到相关资源"),
     FORBIDDEN(10003, "没有访问权限"),
 
-    USER_EXIST(10101, "用户已存在");
+    WRONG_PASSWORD(10100, "用户名或密码错误"),
+    USER_NOT_FOUND(10101, "用户不存在"),
+    USER_EXIST(10102, "用户已存在");
 
     private final int value;
     private final String message;

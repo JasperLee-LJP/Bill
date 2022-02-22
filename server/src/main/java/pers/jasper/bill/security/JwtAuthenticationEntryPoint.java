@@ -17,12 +17,13 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
    private ResponseWriter writer;
 
    @Override
-   public void commence(HttpServletRequest request,
-                        HttpServletResponse response,
+   public void commence(HttpServletRequest request, HttpServletResponse response,
                         AuthenticationException authException) throws IOException {
       // This is invoked when user tries to access a secured REST resource without supplying any credentials
       // We should just send a 401 Unauthorized response because there is no 'login page' to redirect to
       // Here you can place any message you want
+      authException.printStackTrace();
+
       ErrorCode errorCode = ErrorCode.UNAUTHORIZED;
       ErrorResult errorResult = new ErrorResult(HttpServletResponse.SC_UNAUTHORIZED, errorCode);
       writer.sendError(response, errorResult);

@@ -18,25 +18,21 @@ public class ResponseWriter {
     private ObjectMapper mapper;
 
     public <T>void sendData(HttpServletResponse response, int status, T data) {
-        try {
-            write(response, status, mapper.writeValueAsString(data));
-        } catch (JsonProcessingException ex) {
-            write(response, HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage());
-        }
+        write(response, status, data);
     }
 
     public void sendError(HttpServletResponse response, ErrorResult errorResult) {
-        sendData(response, errorResult.getStatus(), errorResult);
+        write(response, errorResult.getStatus(), errorResult);
     }
 
-    private void write(HttpServletResponse response, int httpStatus, String data) {
+    private <T>void write(HttpServletResponse response, int httpStatus, T data) {
         response.setCharacterEncoding("utf-8");
         response.setContentType("application/json");
         response.setStatus(httpStatus);
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
-            writer.write(data);
+            writer.write(mapper.writeValueAsString(data));
             writer.flush();
         } catch (IOException e) {
 
