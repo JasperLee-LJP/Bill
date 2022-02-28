@@ -1,0 +1,49 @@
+package pers.jasper.bill.po;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import springfox.documentation.annotations.ApiIgnore;
+
+import java.util.Date;
+
+@ApiModel
+public class FundSource {
+    @ApiModelProperty(hidden = true)
+    private Integer id;
+    @ApiModelProperty(hidden = true)
+    private Date createTime;
+    private String source;
+    private String color;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+}

@@ -9,9 +9,33 @@
     </select>
     <insert id="addUser" parameterType="pers.jasper.bill.po.User" keyProperty="id" useGeneratedKeys="true">
         insert into user (username, password, gender,
-            birthdate, mobile, email, createTime, status
+            birthdate, mobile, email, create_time, status
         ) values (#{username}, #{password}, #{gender},
             #{birthdate}, #{mobile}, #{email}, #{createTime}, #{status}
         )
     </insert>
+    <update id="updateUserInfo" parameterType="pers.jasper.bill.po.User">
+        update user
+        <trim prefix="set" prefixOverrides=", ">
+            <if test="gender != null">
+                , gender = #{gender}
+            </if>
+            <if test="birthdate != null">
+                , birthdate = #{birthdate}
+            </if>
+            <if test="mobile != null">
+                , mobile = #{mobile}
+            </if>
+            <if test="email != null">
+                , email = #{email}
+            </if>
+            <if test="lastLoginTime != null">
+                , last_login_time = #{lastLoginTime}
+            </if>
+            <if test="status != null">
+                , status = #{status}
+            </if>
+        </trim>
+        where username = #{username}
+    </update>
 </mapper>

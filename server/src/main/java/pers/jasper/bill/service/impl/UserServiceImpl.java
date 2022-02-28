@@ -52,12 +52,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String login(UserLoginDto user) {
+    public String login(UserLoginDto userDto) {
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
+                new UsernamePasswordAuthenticationToken(userDto.getUsername(), userDto.getPassword());
 
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        User user = new User();
+        user.setUsername(userDto.getUsername());
+        user.setLastLoginTime(new Date());
+        userMapper.updateUserInfo(user);
 
         String jwt = tokenProvider.createToken(authentication, true);
         jwt = JWTFilter.TOKEN_PREFIX + jwt;

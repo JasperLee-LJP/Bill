@@ -16,6 +16,9 @@ mybatis:
   type-aliases-package: pers.jasper.bill
   configuration:
     map-underscore-to-camel-case: true
+logging:
+  level:
+    pers.jasper.bill.mapper: debug
 jwt:
   # This token must be encoded using Base64 with mininum 256 bits (32 characters)
   base64-secret: SmFzcGVyQmlsbEV4ZXJjaXNlX1N2ZkxMb2xLTWtKbkxTREZzZGZzd2V3T0tPU1hLTVNBV3FrZXF3c1pPU0pESWpuZXJr

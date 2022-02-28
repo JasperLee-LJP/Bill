@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.jasper.bill.mapper.FundSourceMapper">
+    <insert id="addFundSource" parameterType="pers.jasper.bill.po.FundSource"
+            keyProperty="id" useGeneratedKeys="true">
+        insert into fund_source (create_time, source, color)
+            values (#{createTime}, #{source}, #{color})
+    </insert>
+    <update id="updateFundSource" parameterType="pers.jasper.bill.po.FundSource">
+        update fund_source
+        <trim prefix="set" prefixOverrides=", ">
+            <if test="source != null and source != ''">
+                , source = #{source}
+            </if>
+            <if test="color != null and color != ''">
+                , color = #{color}
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+    <delete id="deleteFundSource" parameterType="int">
+        delete from fund_source where id = #{id}
+    </delete>
+    <select id="getFundSourceById" parameterType="int" resultType="pers.jasper.bill.po.FundSource">
+        select * from fund_source where id = #{id}
+    </select>
+    <select id="getFundSources" resultType="pers.jasper.bill.po.FundSource">
+        select * from fund_source
+    </select>
+</mapper>

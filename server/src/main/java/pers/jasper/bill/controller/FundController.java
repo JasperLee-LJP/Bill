@@ -7,5 +7,5 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("api")
 @Api(tags = "账单流水")
-public class BillController {
+public class FundController {
 }
