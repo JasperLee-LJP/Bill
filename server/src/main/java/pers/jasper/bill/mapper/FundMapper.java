@@ -7,8 +7,9 @@ import java.util.List;
 
 @Mapper
 public interface FundMapper {
-    int addFund();
-    int updateFund();
-    int deleteFund();
+    int addFund(Fund fund);
+    int updateFund(Fund fund);
+    int deleteFund(Integer id);
+    List<Fund> getFundById(Integer id);
     List<Fund> getFunds();
 }

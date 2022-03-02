@@ -10,7 +10,10 @@ public enum ErrorCode {
     WRONG_PASSWORD(10100, "用户名或密码错误"),
     USER_NOT_FOUND(10101, "用户不存在"),
     USER_EXIST(10102, "用户已存在"),
-    NOT_FUND(10103, "资源不存在");
+    NOT_FUND(10103, "资源不存在"),
+    DATE_PARSE_ERROR(10104, "日期格式错误"),
+    DATABASE_ERROR(10105, "数据库错误"),
+    SQL_CONSTRAINT_ERROR(10106, "请先删除关联的数据");
 
     private final int value;
     private final String message;

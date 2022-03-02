@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.jasper.bill.mapper.FundMapper">
+    <resultMap id="fund" type="pers.jasper.bill.po.Fund">
+        <id property="id" column="id" />
+        <result property="createTime" column="create_time"/>
+        <result property="transactionTime" column="transaction_time"/>
+        <result property="amount" column="amount"/>
+        <result property="principal" column="principal"/>
+        <result property="interest" column="interest"/>
+        <association property="fundSource"
+                     javaType="pers.jasper.bill.po.FundSource">
+            <id property="id" column="fs_id" />
+            <result property="createTime" column="fs_create_time"/>
+            <result property="source" column="fs_source"/>
+            <result property="color" column="fs_color"/>
+        </association>
+    </resultMap>
+    
+    <insert id="addFund" parameterType="pers.jasper.bill.po.Fund"
+            keyProperty="id" useGeneratedKeys="true">
+        insert into fund (source_id, create_time, transaction_time, amount, principal, interest)
+        values (#{fundSource.id}, #{createTime}, #{transactionTime}, #{amount}, #{principal}, #{interest})
+    </insert>
+    <update id="updateFund" parameterType="pers.jasper.bill.po.Fund">
+        update fund
+        <trim prefix="set" prefixOverrides=", ">
+            <if test="fundSource != null and fundSource.id != null">
+                , source_id = #{fundSource.id}
+            </if>
+            <if test="transactionTime != null">
+                , transaction_time = #{transactionTime}
+            </if>
+            <if test="amount != null">
+                , amount = #{amount}
+            </if>
+            <if test="principal != null">
+                , principal = #{principal}
+            </if>
+            <if test="interest != null">
+                , interest = #{interest}
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+    <delete id="deleteFund" parameterType="int">
+        delete from fund where id = #{id}
+    </delete>
+    <select id="getFundById" parameterType="int" resultMap="fund">
+        select f.*, fs.id as fs_id, fs.create_time as fs_create_time,
+        fs.source as fs_source, fs.color as fs_color
+        from fund f, fund_source fs where f.source_id = fs.id AND f.id = #{id}
+    </select>
+    <select id="getFunds" resultMap="fund">
+        select f.*, fs.id as fs_id, fs.create_time as fs_create_time,
+        fs.source as fs_source, fs.color as fs_color
+        from fund f, fund_source fs where f.source_id = fs.id
+    </select>
+</mapper>

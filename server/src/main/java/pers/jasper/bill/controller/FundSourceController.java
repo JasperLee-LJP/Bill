@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pers.jasper.bill.dto.FundSourceDto;
 import pers.jasper.bill.exception.CustomException;
 import pers.jasper.bill.exception.ErrorCode;
 import pers.jasper.bill.mapper.FundSourceMapper;
@@ -24,7 +25,10 @@ public class FundSourceController {
 
     @PostMapping(value = "fundSource")
     @ApiOperation(value = "添加资金来源")
-    ResponseEntity<FundSource> addFundSource(@RequestBody FundSource fundSource){
+    ResponseEntity<FundSource> addFundSource(@RequestBody FundSourceDto fundSourceDto){
+        FundSource fundSource = new FundSource();
+        BeanUtils.copyProperties(fundSourceDto, fundSource);
+
         fundSource.setCreateTime(new Date());
         fundSourceMapper.addFundSource(fundSource);
         return new ResponseEntity<>(fundSource, HttpStatus.CREATED);
@@ -32,7 +36,11 @@ public class FundSourceController {
 
     @PutMapping(value = "fundSource/{id}")
     @ApiOperation(value = "修改资金来源")
-    ResponseEntity<FundSource> updateFundSource(@PathVariable Integer id, @RequestBody FundSource fundSource){
+    ResponseEntity<FundSource> updateFundSource(@PathVariable Integer id,
+                                                @RequestBody FundSourceDto fundSourceDto){
+        FundSource fundSource = new FundSource();
+        BeanUtils.copyProperties(fundSourceDto, fundSource);
+
         List<FundSource> sources = fundSourceMapper.getFundSourceById(id);
         if(sources.size() == 0) {
             throw new CustomException(HttpStatus.NOT_FOUND, ErrorCode.NOT_FUND);
@@ -43,7 +51,7 @@ public class FundSourceController {
         if(count > 0) {
             FundSource source = sources.get(0);
             BeanUtils.copyProperties(fundSource, source, "id", "createTime");
-            return new ResponseEntity<>(sources.get(0), HttpStatus.OK);
+            return new ResponseEntity<>(source, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(fundSource, HttpStatus.NOT_FOUND);
         }

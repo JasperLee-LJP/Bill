@@ -1,19 +1,15 @@
 package pers.jasper.bill.po;
 
-import io.swagger.annotations.ApiModelProperty;
-
 import java.util.Date;
 
 public class Fund {
-    @ApiModelProperty(hidden = true)
     private Integer id;
-    private Integer sourceId;
-    @ApiModelProperty(hidden = true)
     private Date createTime;
     private Date transactionTime;
     private Integer amount;
     private Integer principal;
     private Integer interest;
+    private FundSource fundSource;
 
     public Integer getId() {
         return id;
@@ -21,14 +17,6 @@ public class Fund {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getSourceId() {
-        return sourceId;
-    }
-
-    public void setSourceId(Integer sourceId) {
-        this.sourceId = sourceId;
     }
 
     public Date getCreateTime() {
@@ -69,5 +57,13 @@ public class Fund {
 
     public void setInterest(Integer interest) {
         this.interest = interest;
+    }
+
+    public FundSource getFundSource() {
+        return fundSource;
+    }
+
+    public void setFundSource(FundSource fundSource) {
+        this.fundSource = fundSource;
     }
 }

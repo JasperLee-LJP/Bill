@@ -1,5 +1,6 @@
 package pers.jasper.bill.exception;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.text.ParseException;
 
 @ControllerAdvice
 public class ErrorHandler {
@@ -42,6 +45,27 @@ public class ErrorHandler {
             (HttpServletRequest req, Exception e) throws Exception {
         HttpStatus status = HttpStatus.UNAUTHORIZED;
         ErrorCode errorCode = ErrorCode.WRONG_PASSWORD;
+        ErrorResult errorResult = new ErrorResult(status.value(), errorCode);
+        return new ResponseEntity<>(errorResult, status);
+    }
+
+    @ExceptionHandler(value = ParseException.class)
+    public ResponseEntity<ErrorResult> parseExceptionHandler
+            (HttpServletRequest req, Exception e) throws Exception {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        ErrorCode errorCode = ErrorCode.DATE_PARSE_ERROR;
+        ErrorResult errorResult = new ErrorResult(status.value(), errorCode);
+        return new ResponseEntity<>(errorResult, status);
+    }
+
+    @ExceptionHandler(value = DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorResult> dataIntegrityViolationExceptionHandler
+            (HttpServletRequest req, DataIntegrityViolationException e) throws Exception {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        ErrorCode errorCode = ErrorCode.DATABASE_ERROR;
+        if(e.getCause() instanceof SQLIntegrityConstraintViolationException) {
+            errorCode = ErrorCode.SQL_CONSTRAINT_ERROR;
+        }
         ErrorResult errorResult = new ErrorResult(status.value(), errorCode);
         return new ResponseEntity<>(errorResult, status);
     }
