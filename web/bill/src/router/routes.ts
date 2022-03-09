@@ -30,14 +30,35 @@ export const vueRouters = function (): Array<RouteRecordRaw> {
   const routerList: Array<RouteRecordRaw> = [];
   const modules = getModules();
   const components = getComponents();
-  Object.keys(modules).forEach(key => {
+  const routersChildren: { [propName: string]: Array<RouteRecordRaw> } = {};
+  for (const key of Object.keys(modules)) {
     const viewSrc = components[key];
     const file = viewSrc.default;
-    routerList.push({
-      path: `/${file.routePath}`,
-      name: `${file.routeName}`,
-      component: modules[key]
-    });
-  });
+    const parent = file.parent as string;
+    if (parent) {
+      const children = routersChildren[parent] || [];
+      children.push({
+        path: `${file.routePath}`,
+        name: `${file.routeName}`,
+        component: modules[key]
+      });
+      routersChildren[parent] = children;
+    } else {
+      routerList.push({
+        path: `${file.routePath}`,
+        name: `${file.routeName}`,
+        component: modules[key]
+      });
+    }
+  }
+
+  for (const router of routerList) {
+    const name = router.name as string;
+    const children = routersChildren[name];
+    if (children) {
+      router.children = children;
+    }
+  }
+
   return routerList;
 };
